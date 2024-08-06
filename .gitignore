@@ -2,6 +2,10 @@
 dist/
 # generated types
 .astro/
+# VS code settings
+.vscode/
+# works in progress
+drafts/
 
 # dependencies
 node_modules/

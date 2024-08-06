@@ -1,35 +1,60 @@
-import starlight from '@astrojs/starlight'
-import { defineConfig } from 'astro/config'
-
-import markdoc from '@astrojs/markdoc'
+import { defineConfig } from 'astro/config';
+import starlight from '@astrojs/starlight';
+import starlightLinksValidator from 'starlight-links-validator';
+import starlightUtils from '@lorenzo_lewis/starlight-utils';
+import remarkAttr from 'remark-attr';
+import markdoc from '@astrojs/markdoc';
 
 export default defineConfig({
-  site: 'https://fromesoftware.github.io',
-  base: '/website',
   integrations: [
     starlight({
-      title: 'FromeSoftware',
-      social: {
-        github: 'https://github.com/FromeSoftware/website',
-      },
+      plugins: [
+        starlightLinksValidator(),
+		starlightUtils({
+			multiSidebar: {
+			  switcherStyle: "horizontalList",
+			},
+		  }),
+      ],
+      title: 'My Docs',
+      customCss: [
+        './src/styles/custom.css'
+      ],
       sidebar: [
         {
-          label: 'Guides',
-          items: [
-            {
-              label: 'Example Guide',
-              link: '/guides/example/',
-            },
-          ],
+    		label: 'NTW2029',
+	    	// Don't collapse the main group by default.
+			collapsed: false,
+			autogenerate: { directory: 'ntw2029', collapsed: true },
+        },
+		{
+			label: 'General course info',
+			// Don't collapse the main group by default.
+			collapsed: false,
+			autogenerate: { directory: 'courses', collapsed: true },
+		  },
+		  {
+			label: 'Writing',
+			autogenerate: { directory: 'writing', collapsed: true },
+		  },
+      ],
+      head: [
+        {
+          tag: 'script',
+          attrs: {
+            src: '/js/nutshell.js',
+            defer: true,
+          }
         },
         {
-          label: 'Reference',
-          autogenerate: {
-            directory: 'reference',
-          },
-        },
-      ],
+          tag: 'script',
+          attrs: {
+            src: '/nutshell-config.js',
+            defer: true,
+          }
+        }
+      ]
     }),
-    markdoc(),
+    markdoc()
   ],
-})
+});
